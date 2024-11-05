@@ -4,46 +4,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surprise!</title>
+    <title>Loading...</title>
     <style>
-        /* RWD設定，影片在不同裝置上自動調整大小 */
-        body,
-        html {
+        /* Basic reset for margin and padding */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Center content, responsive, and full page styling */
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #000;
+            min-height: 100vh;
+            background-color: #1a1a1a;
+            color: #fff;
+            font-family: Arial, sans-serif;
         }
 
         .video-container {
-            width: 90%;
-            max-width: 800px;
-            aspect-ratio: 16 / 9;
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            padding-top: 56.25%;
+            /* 16:9 aspect ratio */
             overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
         }
 
+        video,
         iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            border: none;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-top: 1rem;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="video-container">
-        <!-- 自動播放Rickroll影片 -->
-        <iframe width="1154" height="649" src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            title="Rick Astley - Never Gonna Give You Up (Official Music Video)" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> allow="autoplay;
-        encrypted-media"></iframe>
+        <video autoplay loop muted playsinline id="videoPlayer">
+            <source src="rickroll.mp4" type="video/mp4">
+            <!-- Fallback text if video is not supported -->
+            <p>Sorry, your browser doesn't support embedded videos.</p>
+        </video>
+        <!-- YouTube fallback -->
+        <iframe id="youtubeFallback"
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&loop=1&playlist=dQw4w9WgXcQ" frameborder="0"
+            allow="autoplay" allowfullscreen style="display: none;"></iframe>
     </div>
+    <h1>Enjoy the video!</h1>
+
+    <script>
+        // Set variables
+        const currentURL = "rickroll.mp4";
+        const pageTitle = "Loading...";
+
+        // Set title function
+        function setTitle() {
+            document.title = pageTitle;
+        }
+
+        // Check if video can play and set fallback
+        function checkVideoSupport() {
+            const video = document.getElementById('videoPlayer');
+            const fallback = document.getElementById('youtubeFallback');
+
+            video.onerror = function () {
+                video.style.display = 'none';
+                fallback.style.display = 'block';
+            };
+        }
+
+        // Run functions on load
+        function onload() {
+            setTitle();
+            checkVideoSupport();
+        }
+
+        window.onload = onload;
+    </script>
 </body>
 
 </html>
